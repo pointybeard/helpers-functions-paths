@@ -1,10 +1,5 @@
 # PHP Helpers: Path Functions
 
--   Version: v1.0.0
--   Date: May 20 2019
--   [Release notes](https://github.com/pointybeard/helpers-functions-paths/blob/master/CHANGELOG.md)
--   [GitHub repository](https://github.com/pointybeard/helpers-functions-paths)
-
 A collection of helpful functions related to paths, directories, and files names
 
 ## Installation
@@ -18,7 +13,7 @@ And run composer to update your dependencies:
 
 ### Requirements
 
-There are no particuar requirements for this library other than PHP 5.6 or greater.
+There are no particuar requirements for this library other than PHP 7.4 or greater.
 
 To include all the [PHP Helpers](https://github.com/pointybeard/helpers) packages on your project, use `composer require pointybeard/helpers` or add `"pointybeard/helpers": "~1.0"` to your composer file.
 
@@ -46,22 +41,41 @@ var_dump(Paths\is_path_absolute('/etc/apache2/sites-enabled/mysite.conf'));
 var_dump(Paths\is_path_absolute(getcwd() . '/../../potato.json'));
 // bool(false)
 
+var_dump(Paths\is_path_absolute('./potato.json'));
+// bool(false)
+
+var_dump(Paths\is_path_absolute('/var/www/mysite/assets/json/../json/potato.json'));
+// bool(false)
+
+var_dump(Paths\get_relative_path(getcwd(), getcwd()));
+// string(1) "."
+
+var_dump(Paths\get_relative_path("/var/www/banana/", "/etc/logs/blah", false));
+// string(22) "../../../etc/logs/blah"
+
 var_dump(Paths\get_relative_path(getcwd(), getcwd() . '/some/sub/folder/path'));
-// string(20) "some/sub/folder/path"
+// string(22) "./some/sub/folder/path"
 
 var_dump(Paths\get_relative_path('/var/www/mysite', '/var/www/someothersite'));
-// string(15) "./someothersite"
+// string(16) "../someothersite"
+
+var_dump(Paths\get_relative_path('/var/www/mysite/docs/index/files', '/var/www/someothersite/docs/index/files'));
+// string(42) "../../../../someothersite/docs/index/files"
 
 try{
-    Paths\get_relative_path('/var/www/mysite', '../../nonexistent', true);
+    Paths\get_relative_path('/var/www/mysite', '../../nonexistent');
 } catch (\Exception $ex) {
     var_dump('ERROR! returned: ' . $ex->getMessage());
 }
 // string(119) "ERROR! returned: path ../../nonexistent is relative and does not exist! Make sure path exists (or set $strict to false)"
 
 /** Same thing again, but this time with strict checking turned off **/
-var_dump(Paths\get_relative_path('/var/www/mysite', '../../nonexistent', false));
-// string(29) "../../../../../../nonexistent"
+try{
+    Paths\get_relative_path('/var/www/mysite', '../../nonexistent', false);
+} catch (\Exception $ex) {
+    var_dump('ERROR! returned: ' . $ex->getMessage());
+}
+// string(84) "ERROR! returned: Both $from and $to paths must be absolute when $strict is disabled!"
 
 ```
 
@@ -74,6 +88,12 @@ or better yet, fork the library and submit a pull request.
 
 We encourage you to contribute to this project. Please check out the [Contributing documentation](https://github.com/pointybeard/helpers-functions-paths/blob/master/CONTRIBUTING.md) for guidelines about how to get involved.
 
+## Author
+-   Alannah Kearney - https://github.com/pointybeard
+-   See also the list of [contributors][ext-contributor] who participated in this project
+
 ## License
 
 "PHP Helpers: Path Functions" is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+
+[ext-contributor]: https://github.com/pointybeard-boilerplate/symext-template-extension/contributors
