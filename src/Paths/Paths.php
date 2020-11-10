@@ -50,7 +50,7 @@ if (!function_exists(__NAMESPACE__."\get_relative_path")) {
 
             // Check if $from path is fully contained within $to and if so, return
             // the difference with './' in front
-            if (count($bitsTo) > count($bitsFrom) && $depth == count($bitsFrom) - 1) {
+            if (count($bitsTo) > count($bitsFrom) && $bitsFrom[count($bitsFrom) - 1] == $bitsTo[$depth]) {
                 return implode(DIRECTORY_SEPARATOR, array_merge(['.'], array_slice($bitsTo, $depth + 1)));
             }
 
