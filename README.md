@@ -62,6 +62,9 @@ var_dump(Paths\get_relative_path('/var/www/mysite', '/var/www/someothersite'));
 var_dump(Paths\get_relative_path('/var/www/mysite/docs/index/files', '/var/www/someothersite/docs/index/files'));
 // string(42) "../../../../someothersite/docs/index/files"
 
+var_dump(Paths\get_relative_path('/var/www/mywebsite.com/lib/extensions/template/data-sources', '/var/www/mywebsite.com/lib/extensions/template/src/Includes/datasource'));
+// string(26) "../src/Includes/datasource"
+
 try{
     Paths\get_relative_path('/var/www/mysite', '../../nonexistent');
 } catch (\Exception $ex) {
